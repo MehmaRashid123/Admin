@@ -1,80 +1,72 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import { FaUser, FaLock } from "react-icons/fa";
 
-export default function LoginPage() {
+export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
 
-    // Example login logic
-    try {
-      if (email === "msyeda808@gmail.com" && password === "Mehma123.") {
-        setLoading(false);
-        Swal.fire({
-          icon: "success",
-          title: "Login Successful",
-          text: "Welcome back, Admin!",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-        router.push("/admin/dashboard");
-      } else {
-        throw new Error("Invalid credentials");
-      }
-    } catch (error) {
-      setLoading(false);
-      Swal.fire({
-        icon: "error",
-        title: "Login Failed",
-        text: "Please check your email and password.",
-      });
+    // Simulating an API request (Replace with real API call)
+    const isValidUser = email === "msyeda808@gmail.com" && password === "Mehma123.";
+
+    if (isValidUser) {
+      localStorage.setItem("isLoggedIn", "true"); // Store login state
+      router.push("/admin/dashboard");
+
+    } else {
+      setError("Invalid email or password. Please try again.");
     }
+
+    setLoading(false);
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900">
-      <div className="w-full max-w-md p-8 bg-gray-800 rounded-2xl shadow-lg">
-        <h1 className="text-3xl font-bold text-center text-gold mb-6">Admin Login</h1>
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-gray-300 font-medium mb-2">
-              Email
-            </label>
+    <div className="flex items-center justify-center min-h-screen bg-black">
+      <div className="bg-gray-900 p-8 rounded-xl shadow-lg w-full max-w-sm border border-gray-700">
+        <h2 className="text-3xl font-bold text-center text-white mb-6">Admin Login</h2>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="relative">
+            <FaUser className="absolute left-3 top-3 text-gray-400" />
             <input
-              id="email"
               type="email"
+              placeholder="Email Address"
+              className="w-full pl-10 p-3 border border-gray-700 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-gold"
               required
             />
           </div>
-          <div>
-            <label htmlFor="password" className="block text-gray-300 font-medium mb-2">
-              Password
-            </label>
+
+          <div className="relative">
+            <FaLock className="absolute left-3 top-3 text-gray-400" />
             <input
-              id="password"
               type="password"
+              placeholder="Password"
+              className="w-full pl-10 p-3 border border-gray-700 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-gold"
               required
             />
           </div>
+
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
           <button
             type="submit"
-            className={`w-full py-3 rounded-lg bg-gold text-gray-900 font-semibold hover:bg-yellow-500 transition ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
+            className={`w-full p-3 rounded-lg text-white font-semibold transition ${
+              loading ? "bg-gray-600 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
             }`}
             disabled={loading}
           >

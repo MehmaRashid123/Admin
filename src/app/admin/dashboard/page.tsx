@@ -2,7 +2,7 @@
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import ProtectedRoute from "@/app/component/protected/page";
+import ProtectedRoute from "@/app/component/ProtectedRoute";
 
 interface Order {
   _id: string;
@@ -179,40 +179,28 @@ export default function AdminDashboard() {
           </table>
         </div>
 
-        {/* Order Details Modal */}
+        {/* Order Detail Modal */}
         {selectedOrder && (
-          <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
-            <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-1/2 border border-gray-700">
-              <h2 className="text-2xl font-bold text-white mb-4">{`${selectedOrder.firstName} ${selectedOrder.lastName}`}</h2>
-              <p>Email: {selectedOrder.email}</p>
-              <p>Phone: {selectedOrder.phone}</p>
-              <p>
-                Address: {selectedOrder.address}, {selectedOrder.city},{" "}
-                {selectedOrder.zipCode}
-              </p>
-              <p>
-                Total: <span className="font-semibold">${selectedOrder.total}</span>
-              </p>
-
-              <h3 className="text-xl font-bold mt-4 text-white">Items:</h3>
-              <div className="flex space-x-2 mt-2">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg w-3/4 max-w-xl">
+              <h2 className="text-2xl font-bold mb-4">
+                Order Details - {selectedOrder.firstName} {selectedOrder.lastName}
+              </h2>
+              <p><strong>Email:</strong> {selectedOrder.email}</p>
+              <p><strong>Phone:</strong> {selectedOrder.phone}</p>
+              <p><strong>Address:</strong> {selectedOrder.address}, {selectedOrder.city}, {selectedOrder.zipCode}</p>
+              <p><strong>Total:</strong> ${selectedOrder.total}</p>
+              <p><strong>Status:</strong> {selectedOrder.status || "No status"}</p>
+              <h3 className="text-xl font-semibold mt-4">Cart Items:</h3>
+              <ul className="list-disc ml-6">
                 {selectedOrder.cartItems.map((item, index) => (
-                  <div
-                    key={index}
-                    className="p-2 border border-gray-700 rounded-md bg-gray-800"
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-16 h-16 rounded-md"
-                    />
-                    <p className="text-center text-gray-300">{item.name}</p>
-                  </div>
+                  <li key={index}>
+                    {item.name}
+                  </li>
                 ))}
-              </div>
-
+              </ul>
               <button
-                className="mt-6 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
                 onClick={() => setSelectedOrder(null)}
               >
                 Close

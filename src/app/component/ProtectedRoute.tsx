@@ -7,10 +7,9 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-
-    if (!token) {
-      router.push("/admin"); // Redirect to login if no token
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (!isLoggedIn) {
+      router.replace("/admin"); // Prevents back navigation
     }
   }, [router]);
 
