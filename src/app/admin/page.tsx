@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client"; // Add this to mark the component as a client component
+
+import { useRouter } from "next/navigation"; // Use next/navigation instead of next/router
 import { useState } from "react";
 
 export default function AdminLogin() {
